@@ -1,0 +1,14 @@
+{
+  "latest": {
+    "fuelDuty": 325,
+    "other": 290
+  },
+  "2023-24": {
+    "fuelDuty": 312,
+    "other": 275
+  },
+  "2022-23": {
+    "fuelDuty": 298,
+    "other": 260
+  }
+}
