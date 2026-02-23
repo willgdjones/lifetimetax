@@ -79,7 +79,8 @@ npm run dev
 | Item | Value |
 |------|-------|
 | Platform | [Railway](https://railway.app) |
-| Service | `tender-dedication` |
+| Service name | `Lifetime Tax` (service ID: `7b06d76e-b096-49c3-9a2b-964519ea4d26`) |
+| Railway domain | `tender-dedication-production.up.railway.app` |
 | Project ID | `3d5f148e-7cc1-4940-ac5f-412b8b345009` |
 | Domain | `lifetimetax.co.uk` (Cloudflare DNS → `mhm0druv.up.railway.app`) |
 | DB | Supabase (project `kncmgrbnqnoftiqwptdo`) |
@@ -116,6 +117,27 @@ Always use the legacy JWT keys. Get them from the Supabase Management API:
 ```bash
 curl -s "https://api.supabase.com/v1/projects/kncmgrbnqnoftiqwptdo/api-keys" \
   -H "Authorization: Bearer <SUPABASE_PERSONAL_ACCESS_TOKEN>"
+```
+
+### Railway CLI quick reference
+
+```bash
+# Link to project (from repo directory)
+railway link -p 3d5f148e-7cc1-4940-ac5f-412b8b345009
+railway service link "Lifetime Tax"
+
+# Check status
+railway service status --all
+
+# View/set env vars
+railway variable list
+railway variable set KEY=value
+
+# View logs
+railway service logs
+
+# Redeploy
+railway service redeploy
 ```
 
 ### DNS (Cloudflare)
