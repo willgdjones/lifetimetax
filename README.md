@@ -6,7 +6,7 @@ LifetimeTax calculates a UK user's lifetime tax contribution using HMRC OAuth da
 
 - Next.js 14 App Router + TypeScript + Tailwind
 - Supabase (Postgres + Auth + RLS)
-- Stripe Checkout (one-time £4.99)
+- All features free (no paywall)
 - HMRC OAuth + HMRC APIs
 - `@vercel/og` image generation
 - PostHog analytics (consent-gated)
@@ -74,4 +74,51 @@ npm run dev
 
 ## Deployment
 
-Deploy to Vercel. Ensure all environment variables are set in Vercel project settings before first production build.
+**Hosted on Railway** — auto-deploys from `main` branch on push.
+
+| Item | Value |
+|------|-------|
+| Platform | [Railway](https://railway.app) |
+| Service | `tender-dedication` |
+| Project ID | `3d5f148e-7cc1-4940-ac5f-412b8b345009` |
+| Domain | `lifetimetax.co.uk` (Cloudflare DNS → `mhm0druv.up.railway.app`) |
+| DB | Supabase (project `kncmgrbnqnoftiqwptdo`) |
+
+### How deploys work
+
+1. Push to `main` on GitHub → Railway auto-builds and deploys
+2. Railway runs `npm run build` (Next.js) and serves the output
+3. Environment variables are set in the Railway dashboard (not in git)
+
+### Environment variables (Railway dashboard)
+
+All the same vars from `.env.local`:
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` — **must be the legacy JWT key** (starts with `eyJhbG...`), NOT the `sb_publishable_` key
+- `SUPABASE_SERVICE_ROLE_KEY` — **must be the legacy JWT key**, NOT `sb_secret_` key
+- `NEXT_PUBLIC_BASE_URL` = `https://lifetimetax.co.uk`
+- `ENCRYPTION_KEY` (32-byte hex)
+- HMRC credentials, Stripe keys, PostHog keys
+
+### Updating env vars
+
+1. Go to https://railway.app → project → `tender-dedication` service → Variables tab
+2. Edit/add the variable
+3. Railway will auto-redeploy after saving
+
+### Supabase key gotcha
+
+Supabase now issues two key formats:
+- **Legacy JWT keys** (start with `eyJhbG...`) — these are what PostgREST/Supabase JS client actually uses
+- **New format keys** (`sb_publishable_...` / `sb_secret_...`) — shown in new Supabase dashboard UI but **don't work with PostgREST RLS**
+
+Always use the legacy JWT keys. Get them from the Supabase Management API:
+```bash
+curl -s "https://api.supabase.com/v1/projects/kncmgrbnqnoftiqwptdo/api-keys" \
+  -H "Authorization: Bearer <SUPABASE_PERSONAL_ACCESS_TOKEN>"
+```
+
+### DNS (Cloudflare)
+
+- CNAME `lifetimetax.co.uk` → `mhm0druv.up.railway.app`
+- Nameservers: `brit.ns.cloudflare.com`, `evan.ns.cloudflare.com`
