@@ -10,7 +10,7 @@ export default function LandingPage() {
       <AuthCta />
       <section className="mt-10 grid gap-4 md:grid-cols-2">
         <article className="rounded-xl border border-slate-200 bg-white/90 p-6">
-          <h2 className="text-2xl font-black">Join 50,000+ people</h2>
+          <h2 className="text-2xl font-black">See where your tax went</h2>
           <p className="mt-2 text-slate-600">Discover your lifetime tax contribution using HMRC history and ONS spending allocation data.</p>
         </article>
         <article className="rounded-xl border border-slate-200 bg-white/90 p-6">
